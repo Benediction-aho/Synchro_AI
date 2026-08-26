@@ -1,45 +1,16 @@
-"""Market structure detection: Order Blocks, Fair Value Gaps, Break of Structure.
-
-Pure functions over OHLCV candle dicts ({epoch, open, high, low, close}).
-All inputs are validated and bounded; malformed candles are rejected loudly
-rather than silently producing garbage signals (defense-in-depth: this module
-feeds the execution path).
-"""
-
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
 import numpy as np
 
-_REQUIRED_KEYS = ("epoch", "open", "high", "low", "close")
-MAX_CANDLES = 100_000
+from synchro.services.agent_engine.intelligence.candles import (
+    MAX_CANDLES,
+    CandleError,
+    to_candle_array,
+)
 
-
-class StructureError(ValueError):
-    pass
-
-
-def _validate_candles(candles: list[dict[str, Any]], min_length: int) -> np.ndarray:
-    if not isinstance(candles, list):
-        raise StructureError("candles must be a list")
-    if len(candles) < min_length:
-        raise StructureError(f"need at least {min_length} candles, got {len(candles)}")
-    if len(candles) > MAX_CANDLES:
-        raise StructureError(f"candle count exceeds safety bound ({MAX_CANDLES})")
-    rows = []
-    for i, c in enumerate(candles):
-        try:
-            values = [float(c[k]) for k in _REQUIRED_KEYS]
-        except (KeyError, TypeError, ValueError) as exc:
-            raise StructureError(f"malformed candle at index {i}") from exc
-        epoch, o, h, l, cl = values
-        if not all(np.isfinite(v) for v in (o, h, l, cl)):
-            raise StructureError(f"non-finite price in candle at index {i}")
-        if h < max(o, cl) - 1e-12 or l > min(o, cl) + 1e-12 or h < l:
-            raise StructureError(f"OHLC invariant violated at index {i}")
-        rows.append((epoch, o, h, l, cl))
-    return np.array(rows, dtype=float)
+StructureError = CandleError
 
 
 class Direction(str, Enum):
@@ -83,7 +54,7 @@ def find_order_blocks(
     """
     if lookback < 1 or max_blocks < 1:
         raise StructureError("lookback and max_blocks must be >= 1")
-    arr = _validate_candles(candles, min_length=lookback + 2)
+    arr = to_candle_array(candles, min_length=lookback + 2)
     closes = arr[:, 4]
     blocks: list[OrderBlock] = []
 
@@ -124,7 +95,7 @@ def find_fair_value_gaps(
     """
     if max_gaps < 1:
         raise StructureError("max_gaps must be >= 1")
-    arr = _validate_candles(candles, min_length=3)
+    arr = to_candle_array(candles, min_length=3)
     gaps: list[FairValueGap] = []
 
     for i in range(len(arr) - 2):
@@ -158,7 +129,7 @@ def find_break_of_structure(
     """
     if swing_window < 1:
         raise StructureError("swing_window must be >= 1")
-    arr = _validate_candles(candles, min_length=2 * swing_window + 2)
+    arr = to_candle_array(candles, min_length=2 * swing_window + 2)
     highs, lows, closes = arr[:, 2], arr[:, 3], arr[:, 4]
     n = len(arr)
 
