@@ -1,3 +1,4 @@
+import os
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -8,6 +9,14 @@ import synchro.db.models  # noqa: F401
 from synchro.db.base import Base
 from synchro.db.session import get_db
 from synchro.services.api_gateway.main import app
+
+# Ensure TELEGRAM_BOT_TOKEN is set for tests BEFORE any settings are loaded
+os.environ.setdefault("TELEGRAM_BOT_TOKEN", "8729665957:AAESaelH61CZ7uubZq4nMQmJrfiweZ_Qsy8")
+
+# Clear any cached settings
+import synchro.core.config as config_module
+if hasattr(config_module.get_settings, "cache_clear"):
+    config_module.get_settings.cache_clear()
 
 engine = create_engine(
     "sqlite://",
