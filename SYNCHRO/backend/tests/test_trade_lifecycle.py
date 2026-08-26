@@ -1,5 +1,6 @@
 import pytest
 
+from synchro.core.timeutils import utcnow
 from synchro.db.models.system import ActorType, AuditLog
 from synchro.db.models.trading import TradeDirection
 from synchro.domain.audit import count_actions, record
@@ -56,6 +57,9 @@ def test_full_happy_path_ratchets_forward(db_session):
         reason="+10 pips reached",
     )
     apply_event(db_session, trade, TradeEvent.TRAILING_ACTIVATED)
+    trade.closed_at = utcnow()
+    trade.pnl = 10.0
+    trade.exit_price = 101.0
     apply_event(db_session, trade, TradeEvent.CLOSED, reason="SL hit in profit")
 
     assert trade.status.value == "closed"
@@ -89,6 +93,9 @@ def test_backward_transitions_rejected(db_session):
 
 def test_terminal_state_locks_everything(db_session):
     trade = _open(db_session)
+    trade.closed_at = utcnow()
+    trade.pnl = 10.0
+    trade.exit_price = 101.0
     apply_event(db_session, trade, TradeEvent.CLOSED)
 
     for event in TradeEvent:
