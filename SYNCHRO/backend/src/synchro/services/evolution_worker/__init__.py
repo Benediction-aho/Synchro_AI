@@ -1,1 +1,1 @@
-"""48h evolution cycle: generate variations, backtest, sandbox validate, deploy/rollback."""
+"""Evolution Worker service package."""

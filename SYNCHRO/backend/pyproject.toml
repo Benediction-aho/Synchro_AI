@@ -21,6 +21,8 @@ dependencies = [
     "redis>=5",
     "numpy>=1.26",
     "cryptography>=43",
+    "celery[redis]>=5.4",
+    "aiogram>=3.10",
 ]
 
 [project.optional-dependencies]
