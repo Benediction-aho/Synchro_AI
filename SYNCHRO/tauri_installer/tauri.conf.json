@@ -1,0 +1,81 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "SYNCHRO",
+  "version": "1.0.0",
+  "identifier": "com.synchro.trading",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:5173",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../frontend/dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "SYNCHRO Trading Agent",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 1024,
+        "minHeight": 720,
+        "resizable": true,
+        "fullscreen": false,
+        "decorations": true,
+        "transparent": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://api.synchro.trade wss://api.synchro.trade; connect-src 'self' https://api.synchro.trade wss://api.synchro.trade; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:;"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["msi", "nsis"],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/256x256.png",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "certificateThumbprint": "",
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "http://timestamp.digicert.com",
+      "tsp": true,
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper",
+        "silent": true
+      },
+      "allowDowngrades": false
+    },
+    "nsis": {
+      "installerIcon": "icons/icon.ico",
+      "installMode": "perMachine",
+      "license": "LICENSE.md",
+      "headerImage": "icons/header.png",
+      "sideImage": "icons/side.png",
+      "allowToChangeInstallDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SYNCHRO Trading Agent",
+      "displayLanguageSelector": false,
+      "languages": ["English"],
+      "components": [
+        "main",
+        "bridge"
+      ]
+    }
+  },
+  "plugins": {
+    "shell": {
+      "open": {
+        "enabled": true,
+        "args": ["https://synchro.trade"]
+      }
+    },
+    "updater": {
+      "endpoints": ["https://updates.synchro.trade/{{target}}/{{current_version}}"],
+      "dialog": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQzODU3MzQ4OTABCDEyMzQ1Njc4OQ=="
+    }
+  }
+}
