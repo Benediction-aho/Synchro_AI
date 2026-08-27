@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+@theme {
+  --color-synchro-bg: #F5F5F5;
+  --color-synchro-text-primary: #333333;
+  --color-synchro-text-secondary: #474747;
+  --color-synchro-card: #BABAF3;
+  --color-synchro-card-hover: #A8A8E0;
+  --color-synchro-border: #D0D0E8;
+  --color-synchro-gold: #C8960C;
+  --color-synchro-navy: #1A3A5C;
+  
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-synchro-border;
+  }
+
+  body {
+    @apply bg-synchro-bg text-synchro-text-primary font-sans antialiased;
+    font-family: var(--font-sans);
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+}
+
+@layer components {
+  .synchro-card {
+    @apply bg-synchro-card rounded-2xl shadow-sm border border-synchro-border transition-all duration-200 hover:shadow-md hover:bg-synchro-card-hover;
+  }
+
+  .synchro-card-elevated {
+    @apply bg-synchro-card rounded-2xl shadow-lg border border-synchro-border;
+  }
+
+  .synchro-btn-primary {
+    @apply bg-synchro-navy text-white px-6 py-3 rounded-xl font-semibold text-base transition-all duration-200 hover:bg-synchro-navy/90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-synchro-navy focus:ring-offset-2;
+  }
+
+  .synchro-btn-secondary {
+    @apply bg-white text-synchro-text-primary px-6 py-3 rounded-xl font-semibold text-base border border-synchro-border transition-all duration-200 hover:bg-synchro-card hover:border-synchro-card active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-synchro-card focus:ring-offset-2;
+  }
+
+  .synchro-btn-gold {
+    @apply bg-synchro-gold text-white px-6 py-3 rounded-xl font-semibold text-base transition-all duration-200 hover:bg-synchro-gold/90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-synchro-gold focus:ring-offset-2;
+  }
+
+  .synchro-btn-ghost {
+    @apply text-synchro-text-secondary px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200 hover:text-synchro-text-primary hover:bg-synchro-border;
+  }
+
+  .synchro-input {
+    @apply w-full px-4 py-3 rounded-xl border border-synchro-border bg-white text-synchro-text-primary placeholder:text-synchro-text-secondary/60 focus:outline-none focus:ring-2 focus:ring-synchro-card focus:border-transparent transition-all duration-200;
+  }
+
+  .synchro-label {
+    @apply block text-sm font-medium text-synchro-text-secondary mb-2;
+  }
+
+  .synchro-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+  }
+
+  .synchro-badge-success {
+    @apply bg-green-100 text-green-800 border border-green-200;
+  }
+
+  .synchro-badge-warning {
+    @apply bg-yellow-100 text-yellow-800 border border-yellow-200;
+  }
+
+  .synchro-badge-danger {
+    @apply bg-red-100 text-red-800 border border-red-200;
+  }
+
+  .synchro-badge-info {
+    @apply bg-blue-100 text-blue-800 border border-blue-200;
+  }
+
+  .synchro-badge-gold {
+    @apply bg-amber-100 text-amber-800 border border-amber-200;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-synchro-bg;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-synchro-card rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-synchro-card-hover;
+}
+
+/* Focus visible for accessibility */
+:focus-visible {
+  @apply outline-none ring-2 ring-synchro-navy ring-offset-2 ring-offset-synchro-bg;
+}
