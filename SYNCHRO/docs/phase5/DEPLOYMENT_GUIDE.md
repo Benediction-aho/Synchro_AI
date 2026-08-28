@@ -23,7 +23,7 @@ Phase 5 completes the SYNCHRO trading agent system with:
 │         └────────────────┼────────────────┘                     │
 │                          ▼                                      │
 │  ┌─────────────────────────────────────────────────────────┐   │
-│  │              Supabase (PostgreSQL + TimescaleDB)        │   │
+│  │              Supabase (PostgreSQL)                      │   │
 │  │  • Users, Accounts, Trades, Signals, Patterns           │   │
 │  │  • RLS per user                                         │   │
 │  └─────────────────────────────────────────────────────────┘   │
@@ -81,7 +81,7 @@ Phase 5 completes the SYNCHRO trading agent system with:
 
 ### Prerequisites
 - AWS Account with admin permissions
-- Supabase project (PostgreSQL + TimescaleDB)
+- Supabase project (PostgreSQL)
 - Deriv API tokens (demo for beta)
 - Windows 10/11 with MetaTrader 5 installed
 

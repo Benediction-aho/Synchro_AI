@@ -38,8 +38,8 @@ MT5 EA executes trade ──► confirmation back ──► trade record in DB
 | Language | Python 3.12 |
 | API framework | FastAPI + Uvicorn |
 | Async tasks | Celery + Redis |
-| Main DB | PostgreSQL 16 |
-| Time-series | TimescaleDB extension |
+| Main DB | PostgreSQL 16 (Supabase) |
+| Time-series | PostgreSQL with manual partitioning |
 | Cache/pubsub | Redis 7 |
 | ML | hmmlearn, stable-baselines3, XGBoost, pandas, numpy |
 | Backtesting | vectorbt or custom event-driven engine |

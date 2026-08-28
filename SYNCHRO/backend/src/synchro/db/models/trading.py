@@ -85,9 +85,13 @@ class Signal(Base):
 
 class EquitySnapshot(Base):
     __tablename__ = "equity_snapshots"
+    __table_args__ = (
+        Index("ix_equity_snapshots_account_id_timestamp", "account_id", "timestamp"),
+    )
 
-    account_id: Mapped[int] = mapped_column(ForeignKey("accounts.id"), primary_key=True)
-    timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), primary_key=True, default=utcnow)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    account_id: Mapped[int] = mapped_column(ForeignKey("accounts.id"), index=True)
+    timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, index=True)
     balance: Mapped[float] = mapped_column(Numeric(18, 2), default=0)
     equity: Mapped[float] = mapped_column(Numeric(18, 2), default=0)
     daily_pnl: Mapped[float] = mapped_column(Numeric(18, 2), default=0)

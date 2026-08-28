@@ -5,7 +5,7 @@
 
 ## 6.1 Infrastructure
 - [ ] Production server(s): 4 vCPU/8GB min, autoscaling group
-- [ ] Managed PostgreSQL with TimescaleDB
+- [ ] Managed PostgreSQL (Supabase)
 - [ ] Redis instance
 - [ ] Object storage (backups, model versions, PDF reports)
 - [ ] CDN + WAF: Cloudflare
